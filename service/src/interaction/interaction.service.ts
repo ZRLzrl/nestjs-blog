@@ -77,8 +77,7 @@ export class InteractionService {
     return {
       id: comment.id,
       content: comment.content,
-      authorId: comment.author.id,
-      articleId: comment.article.id,
+      author: { id: user.id, username: user.username },
       createdAt: comment.createdAt,
     };
   }

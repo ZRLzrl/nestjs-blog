@@ -22,6 +22,7 @@
 | 删除自己的评论 | ❌ | ✅ | ✅ |
 | 删除他人评论 | ❌ | ❌ | ✅ |
 | 查看所有用户列表 | ❌ | ❌ | ✅ |
+| 冻结/解冻用户 | ❌ | ❌ | ✅ |
 
 **权限说明**
 - 游客仅能注册、登录和浏览所有文章（列表与详情），无法进行任何写操作或互动。
@@ -67,7 +68,8 @@
 ### 3.4 用户管理模块（管理员专属）
 - **用户列表查看**  
   管理员可查看所有注册用户的信息，至少包括用户名、角色和注册时间。
-- 此页面仅管理员可访问，普通用户或游客无法查看。
+- **冻结/解冻用户**  
+  管理员可冻结普通用户的账号，冻结后该用户无法登录。管理员账号不可被冻结。前端以标签形式展示用户状态（正常/已冻结），操作时需二次确认。
 
 ## 4. 数据模型概要
 - **User**  
@@ -105,6 +107,7 @@
 | username | VARCHAR | 50 | NOT NULL | - | 用户名，唯一索引 |
 | password | VARCHAR | 255 | NOT NULL | - | 加密后的密码（bcrypt） |
 | role | VARCHAR | 10 | NOT NULL | 'user' | 角色：user/admin |
+| is_frozen | BOOLEAN | - | NOT NULL | FALSE | 是否冻结：true=已冻结，false=正常 |
 | created_at | TIMESTAMP | - | NOT NULL | CURRENT_TIMESTAMP | 创建时间 |
 | updated_at | TIMESTAMP | - | NOT NULL | CURRENT_TIMESTAMP | 更新时间，自动更新 |
 
@@ -360,7 +363,7 @@ POST /auth/login
 
 **错误码：**
 - `400` — 参数校验失败
-- `401` — 用户名或密码错误
+- `401` — 用户名或密码错误 或 账户已被冻结
 
 ---
 
@@ -738,6 +741,7 @@ GET /users
       "id": "uuid",
       "username": "string",
       "role": "user",
+      "isFrozen": false,
       "createdAt": "2026-07-15T12:00:00.000Z"
     }
   ],
@@ -753,6 +757,74 @@ GET /users
 **错误码：**
 - `401` — 未登录
 - `403` — 非管理员
+
+---
+
+### 5.2 冻结用户
+
+冻结指定普通用户的账号，冻结后该用户无法登录。
+
+> **权限**：管理员
+
+```
+PATCH /users/:id/freeze
+```
+
+**Headers：** `Authorization: Bearer <token>`
+
+**Path 参数：**
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| id | string | 用户 UUID |
+
+**Response `data`：**
+
+```json
+{
+  "id": "uuid",
+  "isFrozen": true
+}
+```
+
+**错误码：**
+- `401` — 未登录
+- `403` — 非管理员 或 尝试冻结管理员账号
+- `404` — 用户不存在
+
+---
+
+### 5.3 解冻用户
+
+解冻指定用户的账号，解冻后该用户可以正常登录。
+
+> **权限**：管理员
+
+```
+PATCH /users/:id/unfreeze
+```
+
+**Headers：** `Authorization: Bearer <token>`
+
+**Path 参数：**
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| id | string | 用户 UUID |
+
+**Response `data`：**
+
+```json
+{
+  "id": "uuid",
+  "isFrozen": false
+}
+```
+
+**错误码：**
+- `401` — 未登录
+- `403` — 非管理员
+- `404` — 用户不存在
 
 ---
 
@@ -772,6 +844,8 @@ GET /users
 | POST | /articles/:id/comments | 需登录 | 发表评论 |
 | DELETE | /articles/:id/comments/:commentId | 作者/管理员 | 删除评论 |
 | GET | /users | 管理员 | 获取用户列表 |
+| PATCH | /users/:id/freeze | 管理员 | 冻结用户 |
+| PATCH | /users/:id/unfreeze | 管理员 | 解冻用户 |
 
 ---
 

@@ -20,16 +20,19 @@ export class ArticleService {
   ) {}
 
   async findAll(query: QueryArticleDto) {
-    const { page = 1, limit = 10, authorId } = query;
+    const { page = 1, limit = 10, authorId, title } = query;
     const offset = (page - 1) * limit;
 
     const where: any = {};
     if (authorId) {
       where.author = authorId;
     }
+    if (title) {
+      where.title = { $ilike: `%${title}%` };
+    }
 
     const [items, total] = await this.articleRepository.findAndCount(where, {
-      populate: ['author'],
+      populate: ['author', 'likes', 'comments'],
       orderBy: { createdAt: 'DESC' },
       offset,
       limit,

@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, Min, IsUUID } from 'class-validator';
+import { IsOptional, IsInt, Min, IsUUID, IsString, MaxLength } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -21,4 +21,10 @@ export class QueryArticleDto {
   @IsOptional()
   @IsUUID()
   authorId?: string;
+
+  @ApiPropertyOptional({ description: '按标题搜索' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  title?: string;
 }

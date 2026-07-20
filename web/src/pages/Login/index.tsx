@@ -19,8 +19,9 @@ export default function Login() {
       await login(values)
       message.success('登录成功')
       navigate('/', { replace: true })
-    } catch {
-      message.error('用户名或密码错误')
+    } catch (error: any) {
+      const errMsg = error?.response?.data?.message || error?.message || '用户名或密码错误'
+      message.error(errMsg)
     }
   }
 

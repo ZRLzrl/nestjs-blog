@@ -1,9 +1,12 @@
-import axios from 'axios'
-import { tokenUtil } from '@/utils/token'
 import { message } from 'antd'
+import axios from 'axios'
+
+import { tokenUtil } from '@/utils/token'
+
+const apiUrl = import.meta.env.VITE_APP_API
 
 const apiClient = axios.create({
-  baseURL: '/api/v1',
+  baseURL: apiUrl,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 })
@@ -29,11 +32,20 @@ apiClient.interceptors.response.use(
     return Promise.reject(new Error(msg || '请求失败'))
   },
   (error) => {
+    // 请求被取消（AbortController），静默处理不弹错误提示
+    if (axios.isCancel(error)) {
+      return Promise.reject(error)
+    }
+
     if (error.response) {
       const { status, data } = error.response
       const msg = data?.message || '服务器错误'
 
       if (status === 401) {
+        // 登录接口的 401 是用户名/密码错误，让调用方自行处理
+        if (error.config.url?.includes('/auth/login')) {
+          return Promise.reject(error)
+        }
         message.error('登录已过期，请重新登录')
         tokenUtil.clear()
         // 跳转登录页（使用 window.location 以防 store 未初始化）
@@ -50,6 +62,8 @@ apiClient.interceptors.response.use(
       message.error('请求超时，请稍后重试')
       return Promise.reject(error)
     }
+
+    console.log('error', error)
 
     message.error('网络错误，请检查网络连接')
     return Promise.reject(error)

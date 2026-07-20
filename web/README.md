@@ -1,3 +1,6 @@
+## 包管理工具
+- pnpm
+
 ## 技术选型
 
 - vite(v8.1.4)
@@ -8,6 +11,7 @@
 - zustand
 - ahooks
 - axios
+- dayjs
 - GSAP (GreenSock Animation Platform)
 
 ---

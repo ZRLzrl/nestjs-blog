@@ -53,9 +53,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAdmin: res.user.role === 'admin',
         loading: false,
       })
-    } catch {
+    } catch (error) {
       set({ loading: false })
-      throw new Error('登录失败')
+      throw error
     }
   },
 

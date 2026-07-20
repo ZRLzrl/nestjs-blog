@@ -12,6 +12,7 @@ export class DatabaseSeeder extends Seeder {
       username: 'admin',
       password: hashedPassword,
       role: UserRole.ADMIN,
+      isFrozen: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -21,6 +22,7 @@ export class DatabaseSeeder extends Seeder {
       username: 'testuser',
       password: userPassword,
       role: UserRole.USER,
+      isFrozen: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

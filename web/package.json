@@ -14,8 +14,10 @@
     "ahooks": "^3.9.7",
     "antd": "^6.5.1",
     "axios": "^1.18.1",
+    "dayjs": "^1.11.21",
     "gsap": "^3.15.0",
     "react": "^19.2.7",
+    "react-activity-keepalive-kit": "^0.1.2",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
     "zustand": "^5.0.14"

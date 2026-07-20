@@ -21,7 +21,7 @@ export default function Register() {
       message.success('注册成功，请登录')
       navigate('/login', { replace: true })
     } catch {
-      message.error('注册失败，请重试')
+      // message.error('注册失败，请重试')
     }
   }
 

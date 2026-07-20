@@ -20,12 +20,18 @@ importers:
       axios:
         specifier: ^1.18.1
         version: 1.18.1
+      dayjs:
+        specifier: ^1.11.21
+        version: 1.11.21
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
       react:
         specifier: ^19.2.7
         version: 19.2.7
+      react-activity-keepalive-kit:
+        specifier: ^0.1.2
+        version: 0.1.2(react@19.2.7)
       react-dom:
         specifier: ^19.2.7
         version: 19.2.7(react@19.2.7)
@@ -1073,6 +1079,12 @@ packages:
   proxy-from-env@2.1.0:
     resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
     engines: {node: '>=10'}
+
+  react-activity-keepalive-kit@0.1.2:
+    resolution: {integrity: sha512-UXMA5t2BP3XR0NtIPQn0DhPEaDlLFdT13F4GBDvhWqVqdh34cPYoOdiuSpX6wli25Y5p2QcTLc8otZv7DkcrPQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: '>=19.2.0'
 
   react-dom@19.2.7:
     resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
@@ -2153,6 +2165,10 @@ snapshots:
       source-map-js: 1.2.1
 
   proxy-from-env@2.1.0: {}
+
+  react-activity-keepalive-kit@0.1.2(react@19.2.7):
+    dependencies:
+      react: 19.2.7
 
   react-dom@19.2.7(react@19.2.7):
     dependencies:

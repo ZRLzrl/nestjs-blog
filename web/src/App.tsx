@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider, theme } from 'antd'
-import { AppRoutes } from '@/routes'
+import { Layout } from '@/components/Layout'
 import { useAuthStore } from '@/store/auth'
 import { useThemeStore } from '@/store/theme'
 
@@ -32,7 +32,7 @@ function App() {
       }}
     >
       <BrowserRouter>
-        <AppRoutes />
+        <Layout />
       </BrowserRouter>
     </ConfigProvider>
   )

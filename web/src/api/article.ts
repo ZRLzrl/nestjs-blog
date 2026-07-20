@@ -59,12 +59,16 @@ export interface CreateCommentRequest {
 }
 
 export const articleApi = {
-  getList(params: {
-    page?: number
-    limit?: number
-    authorId?: string
-  }): Promise<PaginatedResponse<ArticleListItem>> {
-    return apiClient.get('/articles', { params })
+  getList(
+    params: {
+      page?: number
+      limit?: number
+      authorId?: string
+      title?: string
+    },
+    config?: { signal?: AbortSignal },
+  ): Promise<PaginatedResponse<ArticleListItem>> {
+    return apiClient.get('/articles', { params, signal: config?.signal })
   },
 
   getDetail(id: string): Promise<ArticleDetail> {

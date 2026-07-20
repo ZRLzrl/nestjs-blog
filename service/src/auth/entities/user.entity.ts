@@ -29,6 +29,9 @@ export class User {
   @Enum(() => UserRole)
   role: UserRole = UserRole.USER;
 
+  @Property({ default: false })
+  isFrozen: boolean = false;
+
   @Property()
   createdAt: Date = new Date();
 

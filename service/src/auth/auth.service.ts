@@ -32,6 +32,7 @@ export class AuthService {
       username: dto.username,
       password: hashedPassword,
       role: UserRole.USER,
+      isFrozen: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -56,6 +57,10 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('用户名或密码错误');
+    }
+
+    if (user.isFrozen) {
+      throw new UnauthorizedException('账户已被冻结，无法登录');
     }
 
     const payload = { sub: user.id, username: user.username, role: user.role };
