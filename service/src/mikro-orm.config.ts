@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Migrator } from '@mikro-orm/migrations';
 import { defineConfig } from '@mikro-orm/postgresql';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
@@ -7,11 +8,13 @@ export default defineConfig({
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   metadataProvider: TsMorphMetadataProvider,
+
   dbName: process.env.DB_NAME,
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
+
   migrations: {
     path: 'dist/migrations',
     pathTs: 'src/migrations',

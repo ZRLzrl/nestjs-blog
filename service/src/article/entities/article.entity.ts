@@ -12,7 +12,7 @@ import { Comment } from '../../interaction/entities/comment.entity.js';
 
 @Entity()
 export class Article {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
   @Property({ length: 200 })

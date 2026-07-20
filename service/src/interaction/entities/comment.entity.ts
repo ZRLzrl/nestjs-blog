@@ -12,7 +12,7 @@ import { User } from '../../auth/entities/user.entity.js';
 
 @Entity()
 export class Comment {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
   @Property({ type: 'text' })

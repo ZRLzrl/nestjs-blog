@@ -101,7 +101,7 @@
 
 | 字段名 | 数据类型 | 长度/范围 | 是否为空 | 默认值 | 说明 |
 |--------|----------|-----------|----------|--------|------|
-| id | UUID | - | NOT NULL | uuid_generate_v4() | 主键，使用UUID |
+| id | UUID | - | NOT NULL | gen_random_uuid() | 主键，使用UUID |
 | username | VARCHAR | 50 | NOT NULL | - | 用户名，唯一索引 |
 | password | VARCHAR | 255 | NOT NULL | - | 加密后的密码（bcrypt） |
 | role | VARCHAR | 10 | NOT NULL | 'user' | 角色：user/admin |
@@ -122,7 +122,7 @@
 
 | 字段名 | 数据类型 | 长度/范围 | 是否为空 | 默认值 | 说明 |
 |--------|----------|-----------|----------|--------|------|
-| id | UUID | - | NOT NULL | uuid_generate_v4() | 主键 |
+| id | UUID | - | NOT NULL | gen_random_uuid() | 主键 |
 | title | VARCHAR | 200 | NOT NULL | - | 文章标题 |
 | content | TEXT | - | NOT NULL | - | 文章正文 |
 | author_id | UUID | - | NOT NULL | - | 作者ID，外键关联user表 |
@@ -143,7 +143,7 @@
 
 | 字段名 | 数据类型 | 长度/范围 | 是否为空 | 默认值 | 说明 |
 |--------|----------|-----------|----------|--------|------|
-| id | UUID | - | NOT NULL | uuid_generate_v4() | 主键 |
+| id | UUID | - | NOT NULL | gen_random_uuid() | 主键 |
 | user_id | UUID | - | NOT NULL | - | 点赞用户ID |
 | article_id | UUID | - | NOT NULL | - | 被点赞文章ID |
 | created_at | TIMESTAMP | - | NOT NULL | CURRENT_TIMESTAMP | 点赞时间 |
@@ -163,7 +163,7 @@
 
 | 字段名 | 数据类型 | 长度/范围 | 是否为空 | 默认值 | 说明 |
 |--------|----------|-----------|----------|--------|------|
-| id | UUID | - | NOT NULL | uuid_generate_v4() | 主键 |
+| id | UUID | - | NOT NULL | gen_random_uuid() | 主键 |
 | content | TEXT | - | NOT NULL | - | 评论内容 |
 | user_id | UUID | - | NOT NULL | - | 评论者ID |
 | article_id | UUID | - | NOT NULL | - | 所属文章ID |
