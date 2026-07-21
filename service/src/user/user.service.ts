@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import {
   Injectable,
   NotFoundException,
@@ -14,6 +14,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
+    private readonly em: EntityManager,
   ) {}
 
   async findAll(query: QueryUserDto) {
@@ -55,7 +56,8 @@ export class UserService {
       throw new ForbiddenException('不能冻结管理员账号');
     }
     user.isFrozen = true;
-    await this.userRepository.getEntityManager().flush();
+    // await this.userRepository.getEntityManager().flush();
+    await this.em.flush();
     return { id: user.id, isFrozen: user.isFrozen };
   }
 
@@ -65,7 +67,8 @@ export class UserService {
       throw new NotFoundException('用户不存在');
     }
     user.isFrozen = false;
-    await this.userRepository.getEntityManager().flush();
+    // await this.userRepository.getEntityManager().flush();
+    await this.em.flush();
     return { id: user.id, isFrozen: user.isFrozen };
   }
 }

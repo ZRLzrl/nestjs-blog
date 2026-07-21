@@ -1,4 +1,4 @@
-import { Collection } from '@mikro-orm/core';
+import { Collection, type Rel } from '@mikro-orm/core';
 import {
   Entity,
   PrimaryKey,
@@ -23,7 +23,7 @@ export class Article {
   content!: string;
 
   @ManyToOne(() => User)
-  author!: User;
+  author!: Rel<User>;
 
   @Property()
   createdAt: Date = new Date();
