@@ -11,9 +11,12 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 @Module({
   imports: [
     MikroOrmModule.forFeature([User]),
+    // 配置 PassportModule 为 JWT 策略
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    // 配置 JwtModule
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'dev-secret',
+      // 配置 JWT 过期时间为 7 天
       signOptions: { expiresIn: '7d' },
     }),
   ],

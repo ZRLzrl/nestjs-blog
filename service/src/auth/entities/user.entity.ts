@@ -21,7 +21,7 @@ export class User {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
-  @Property({ length: 50, unique: true })
+  @Property({ length: 30, unique: true })
   username!: string;
 
   @Property({ length: 255, hidden: true })

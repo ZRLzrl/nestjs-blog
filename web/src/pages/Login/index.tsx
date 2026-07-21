@@ -39,6 +39,7 @@ export default function Login() {
             rules={[
               { required: true, message: '请输入用户名' },
               { min: 2, message: '用户名至少 2 个字符' },
+              { max: 30, message: '用户名最多 30 个字符' },
             ]}
           >
             <Input prefix={<UserOutlined />} placeholder="用户名" />
@@ -48,6 +49,7 @@ export default function Login() {
             rules={[
               { required: true, message: '请输入密码' },
               { min: 6, message: '密码至少 6 个字符' },
+              { max: 18, message: '密码最多 18 个字符' },
             ]}
           >
             <Input.Password prefix={<LockOutlined />} placeholder="密码" />
