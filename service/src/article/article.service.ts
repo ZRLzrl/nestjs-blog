@@ -1,15 +1,17 @@
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 import {
   Injectable,
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { Article } from './entities/article.entity.js';
+
 import { User } from '../auth/entities/user.entity.js';
 import { CreateArticleDto } from './dto/create-article.dto.js';
-import { UpdateArticleDto } from './dto/update-article.dto.js';
 import { QueryArticleDto } from './dto/query-article.dto.js';
+import { UpdateArticleDto } from './dto/update-article.dto.js';
+import { Article } from './entities/article.entity.js';
+
 import type { JwtUser } from '../auth/strategies/jwt.strategy.js';
 
 @Injectable()
@@ -23,7 +25,7 @@ export class ArticleService {
     const { page = 1, limit = 10, authorId, title } = query;
     const offset = (page - 1) * limit;
 
-    const where: any = {};
+    const where: { author?: string; title?: { $ilike: string } } = {};
     if (authorId) {
       where.author = authorId;
     }

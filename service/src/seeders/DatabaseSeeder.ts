@@ -1,6 +1,7 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import * as bcrypt from 'bcrypt';
+
 import { User, UserRole } from '../auth/entities/user.entity.js';
 
 export class DatabaseSeeder extends Seeder {

@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
+
 import { User, UserRole } from '../auth/entities/user.entity.js';
 import { QueryUserDto } from './dto/query-user.dto.js';
 

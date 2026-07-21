@@ -1,5 +1,3 @@
-import { useEffect, useState, useCallback } from 'react'
-import { Card, Typography, Table, Tag, Button, Modal, Skeleton, message } from 'antd'
 import {
   TeamOutlined,
   UserOutlined,
@@ -7,7 +5,19 @@ import {
   StopOutlined,
   CheckCircleOutlined,
 } from '@ant-design/icons'
+import {
+  Card,
+  Typography,
+  Table,
+  Tag,
+  Button,
+  Modal,
+  Skeleton,
+  message,
+} from 'antd'
 import dayjs from 'dayjs'
+import { useEffect, useState, useCallback } from 'react'
+
 import { userApi, type UserItem } from '@/api/user'
 
 const { Title } = Typography
@@ -35,7 +45,8 @@ export default function AdminUsers() {
     fetchUsers()
   }, [fetchUsers])
 
-  const formatDate = (dateStr: string) => dayjs(dateStr).format('YYYY-MM-DD HH:mm')
+  const formatDate = (dateStr: string) =>
+    dayjs(dateStr).format('YYYY-MM-DD HH:mm')
 
   const handleFreeze = (record: UserItem) => {
     Modal.confirm({

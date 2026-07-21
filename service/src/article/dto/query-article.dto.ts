@@ -1,6 +1,13 @@
-import { IsOptional, IsInt, Min, IsUUID, IsString, MaxLength } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import {
+  IsOptional,
+  IsInt,
+  Min,
+  IsUUID,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class QueryArticleDto {
   @ApiPropertyOptional({ description: '页码', default: 1 })

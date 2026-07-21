@@ -1,5 +1,14 @@
-import { useEffect, useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {
+  FileTextOutlined,
+  HeartOutlined,
+  HeartFilled,
+  MessageOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons'
 import {
   Card,
   Typography,
@@ -14,21 +23,16 @@ import {
   Tag,
   Empty,
 } from 'antd'
-import {
-  FileTextOutlined,
-  HeartOutlined,
-  HeartFilled,
-  MessageOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  UserOutlined,
-  CalendarOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons'
 import dayjs from 'dayjs'
-import { articleApi, type ArticleDetail as ArticleDetailType } from '@/api/article'
-import { useAuthStore } from '@/store/auth'
+import { useEffect, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import {
+  articleApi,
+  type ArticleDetail as ArticleDetailType,
+} from '@/api/article'
 import { useRouteParam } from '@/hooks/useRouteParams'
+import { useAuthStore } from '@/store/auth'
 
 const { Title, Text, Paragraph } = Typography
 const { TextArea } = Input
@@ -43,7 +47,9 @@ export default function ArticleDetail() {
   const [liking, setLiking] = useState(false)
   const [commentContent, setCommentContent] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
-  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null)
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(
+    null,
+  )
   const [deletingArticle, setDeletingArticle] = useState(false)
 
   const fetchArticle = useCallback(async () => {
@@ -91,7 +97,9 @@ export default function ArticleDetail() {
     if (!id || !commentContent.trim()) return
     setSubmittingComment(true)
     try {
-      const newComment = await articleApi.addComment(id, { content: commentContent.trim() })
+      const newComment = await articleApi.addComment(id, {
+        content: commentContent.trim(),
+      })
       message.success('评论成功')
       setCommentContent('')
       setArticle((prev) =>
@@ -121,7 +129,10 @@ export default function ArticleDetail() {
           message.success('评论已删除')
           setArticle((prev) =>
             prev
-              ? { ...prev, comments: prev.comments.filter((c) => c.id !== commentId) }
+              ? {
+                  ...prev,
+                  comments: prev.comments.filter((c) => c.id !== commentId),
+                }
               : prev,
           )
         } catch {
@@ -138,7 +149,8 @@ export default function ArticleDetail() {
     Modal.confirm({
       title: '确认删除',
       icon: <ExclamationCircleOutlined />,
-      content: '确定要删除这篇文章吗？删除后不可恢复，其下的所有评论和点赞也将一并移除。',
+      content:
+        '确定要删除这篇文章吗？删除后不可恢复，其下的所有评论和点赞也将一并移除。',
       okText: '删除',
       okType: 'danger',
       cancelText: '取消',
@@ -164,7 +176,8 @@ export default function ArticleDetail() {
   const canDeleteComment = (commentAuthorId: string) =>
     isAdmin || user?.id === commentAuthorId
 
-  const formatDate = (dateStr: string) => dayjs(dateStr).format('YYYY-MM-DD HH:mm')
+  const formatDate = (dateStr: string) =>
+    dayjs(dateStr).format('YYYY-MM-DD HH:mm')
 
   if (loading) {
     return (
@@ -292,7 +305,10 @@ export default function ArticleDetail() {
               </Button>
             </div>
           ) : (
-            <Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>
+            <Text
+              type="secondary"
+              style={{ display: 'block', marginBottom: 24 }}
+            >
               请<a onClick={() => navigate('/login')}>登录</a>后发表评论
             </Text>
           )}
@@ -321,7 +337,10 @@ export default function ArticleDetail() {
                       <UserOutlined />
                       <Text strong>{comment.author.username}</Text>
                       {comment.author.id === article.author.id && (
-                        <Tag color="blue" style={{ fontSize: 11, lineHeight: '18px' }}>
+                        <Tag
+                          color="blue"
+                          style={{ fontSize: 11, lineHeight: '18px' }}
+                        >
                           作者
                         </Tag>
                       )}

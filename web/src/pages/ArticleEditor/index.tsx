@@ -1,9 +1,19 @@
+import { EditOutlined } from '@ant-design/icons'
+import {
+  Card,
+  Typography,
+  Form,
+  Input,
+  Button,
+  message,
+  Skeleton,
+  Space,
+} from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, matchPath } from 'react-router-dom'
-import { useRouteParam } from '@/hooks/useRouteParams'
-import { Card, Typography, Form, Input, Button, message, Skeleton, Space } from 'antd'
-import { EditOutlined } from '@ant-design/icons'
+
 import { articleApi, type ArticleDetail } from '@/api/article'
+import { useRouteParam } from '@/hooks/useRouteParams'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -102,7 +112,12 @@ export default function ArticleEditor() {
               { max: 200, message: '标题不能超过 200 个字符' },
             ]}
           >
-            <Input size="large" placeholder="请输入文章标题" maxLength={200} showCount />
+            <Input
+              size="large"
+              placeholder="请输入文章标题"
+              maxLength={200}
+              showCount
+            />
           </Form.Item>
 
           <Form.Item
@@ -119,7 +134,12 @@ export default function ArticleEditor() {
 
           <Form.Item>
             <Space>
-              <Button type="primary" htmlType="submit" size="large" loading={submitting}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                loading={submitting}
+              >
                 {isEditing ? '保存修改' : '发布文章'}
               </Button>
               <Button size="large" onClick={() => navigate(-1)}>

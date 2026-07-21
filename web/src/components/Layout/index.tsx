@@ -8,17 +8,23 @@ import {
   MoonOutlined,
 } from '@ant-design/icons'
 import { Layout as AntLayout, Button, Space, Typography, Modal } from 'antd'
-import { useLocation, useNavigate, Link, matchPath, Navigate } from 'react-router-dom'
 import KeepAlive from 'react-activity-keepalive-kit'
+import {
+  useLocation,
+  useNavigate,
+  Link,
+  matchPath,
+  Navigate,
+} from 'react-router-dom'
 
 import { useAuth } from '@/hooks/useAuth'
-import { useThemeStore } from '@/store/theme'
-import ArticleList from '@/pages/ArticleList'
+import AdminUsers from '@/pages/AdminUsers'
 import ArticleDetail from '@/pages/ArticleDetail'
+import ArticleEditor from '@/pages/ArticleEditor'
+import ArticleList from '@/pages/ArticleList'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import ArticleEditor from '@/pages/ArticleEditor'
-import AdminUsers from '@/pages/AdminUsers'
+import { useThemeStore } from '@/store/theme'
 
 const { Header, Content, Footer } = AntLayout
 const { Text } = Typography
@@ -34,12 +40,28 @@ interface RouteConfig {
 /** 路由配置：路径顺序从精确到模糊 */
 const ROUTE_CONFIG: RouteConfig[] = [
   { path: '/', key: 'article-list', Component: ArticleList },
-  { path: '/articles/new', key: 'article-new', Component: ArticleEditor, requiresAuth: true },
-  { path: '/articles/:id/edit', key: 'article-edit', Component: ArticleEditor, requiresAuth: true },
+  {
+    path: '/articles/new',
+    key: 'article-new',
+    Component: ArticleEditor,
+    requiresAuth: true,
+  },
+  {
+    path: '/articles/:id/edit',
+    key: 'article-edit',
+    Component: ArticleEditor,
+    requiresAuth: true,
+  },
   { path: '/articles/:id', key: 'article-detail', Component: ArticleDetail },
   { path: '/login', key: 'login', Component: Login },
   { path: '/register', key: 'register', Component: Register },
-  { path: '/admin/users', key: 'admin-users', Component: AdminUsers, requiresAuth: true, requiresAdmin: true },
+  {
+    path: '/admin/users',
+    key: 'admin-users',
+    Component: AdminUsers,
+    requiresAuth: true,
+    requiresAdmin: true,
+  },
 ]
 
 /** 获取当前匹配的路由 */
@@ -72,7 +94,8 @@ export function Layout() {
   const selectedKey = (() => {
     if (!activeRoute) return ''
     if (activeRoute.key === 'article-list') return 'home'
-    if (activeRoute.key === 'article-new' || activeRoute.key === 'article-edit') return 'new'
+    if (activeRoute.key === 'article-new' || activeRoute.key === 'article-edit')
+      return 'new'
     if (activeRoute.key === 'admin-users') return 'admin'
     return ''
   })()
@@ -80,8 +103,22 @@ export function Layout() {
   const navItems = isAuthenticated
     ? [
         { key: 'home', label: '文章列表', path: '/' },
-        { key: 'new', icon: <EditOutlined />, label: '写文章', path: '/articles/new' },
-        ...(isAdmin ? [{ key: 'admin', icon: <TeamOutlined />, label: '用户管理', path: '/admin/users' }] : []),
+        {
+          key: 'new',
+          icon: <EditOutlined />,
+          label: '写文章',
+          path: '/articles/new',
+        },
+        ...(isAdmin
+          ? [
+              {
+                key: 'admin',
+                icon: <TeamOutlined />,
+                label: '用户管理',
+                path: '/admin/users',
+              },
+            ]
+          : []),
       ]
     : []
 
@@ -189,10 +226,12 @@ export function Layout() {
           <Navigate to="/" replace />
         ) : (
           <KeepAlive activeName={activeRoute?.key ?? ''} max={5}>
-            {activeRoute ? (() => {
-              const Component = activeRoute.Component
-              return <Component />
-            })() : null}
+            {activeRoute
+              ? (() => {
+                  const Component = activeRoute.Component
+                  return <Component />
+                })()
+              : null}
           </KeepAlive>
         )}
       </Content>

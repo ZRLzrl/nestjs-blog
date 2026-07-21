@@ -1,6 +1,7 @@
 import { create } from 'zustand'
-import { tokenUtil } from '@/utils/token'
+
 import { authApi, type LoginRequest, type RegisterRequest } from '@/api/auth'
+import { tokenUtil } from '@/utils/token'
 
 interface User {
   id: string

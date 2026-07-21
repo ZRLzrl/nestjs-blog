@@ -8,9 +8,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { InteractionService } from './interaction.service.js';
-import { CreateCommentDto } from './dto/create-comment.dto.js';
+
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { CreateCommentDto } from './dto/create-comment.dto.js';
+import { InteractionService } from './interaction.service.js';
+
 import type { JwtUser } from '../auth/strategies/jwt.strategy.js';
 
 @ApiTags('互动')

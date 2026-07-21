@@ -1,6 +1,7 @@
-import { Card, Form, Input, Button, Typography, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { Card, Form, Input, Button, Typography, message } from 'antd'
 import { useNavigate, Link } from 'react-router-dom'
+
 import { useAuth } from '@/hooks/useAuth'
 
 const { Title } = Typography
@@ -20,7 +21,8 @@ export default function Login() {
       message.success('登录成功')
       navigate('/', { replace: true })
     } catch (error: any) {
-      const errMsg = error?.response?.data?.message || error?.message || '用户名或密码错误'
+      const errMsg =
+        error?.response?.data?.message || error?.message || '用户名或密码错误'
       message.error(errMsg)
     }
   }

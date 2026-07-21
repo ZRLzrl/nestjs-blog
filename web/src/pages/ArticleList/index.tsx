@@ -6,10 +6,10 @@ import {
   CalendarOutlined,
 } from '@ant-design/icons'
 import { Card, Typography, Pagination, Space, Skeleton, Input } from 'antd'
+import dayjs from 'dayjs'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import dayjs from 'dayjs'
 import { articleApi, type ArticleListItem } from '@/api/article'
 
 const { Title, Text } = Typography
@@ -49,7 +49,9 @@ export default function ArticleList() {
       if (titleKeyword) {
         params.title = titleKeyword
       }
-      const res = await articleApi.getList(params, { signal: controller.signal })
+      const res = await articleApi.getList(params, {
+        signal: controller.signal,
+      })
       lastParamsRef.current = paramsKey
       setArticles(res.items)
       setTotal(res.meta.total)
@@ -84,7 +86,8 @@ export default function ArticleList() {
     })
   }
 
-  const formatDate = (dateStr: string) => dayjs(dateStr).format('YYYY-MM-DD HH:mm')
+  const formatDate = (dateStr: string) =>
+    dayjs(dateStr).format('YYYY-MM-DD HH:mm')
 
   return (
     <div>

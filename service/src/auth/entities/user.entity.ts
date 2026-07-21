@@ -1,3 +1,4 @@
+import { Collection } from '@mikro-orm/core';
 import {
   Entity,
   PrimaryKey,
@@ -5,10 +6,10 @@ import {
   Enum,
   OneToMany,
 } from '@mikro-orm/decorators/legacy';
-import { Collection } from '@mikro-orm/core';
+
 import { Article } from '../../article/entities/article.entity.js';
-import { Like } from '../../interaction/entities/like.entity.js';
 import { Comment } from '../../interaction/entities/comment.entity.js';
+import { Like } from '../../interaction/entities/like.entity.js';
 
 export enum UserRole {
   USER = 'user',

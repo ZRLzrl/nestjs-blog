@@ -1,6 +1,7 @@
+import { ConfigProvider, theme } from 'antd'
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { ConfigProvider, theme } from 'antd'
+
 import { Layout } from '@/components/Layout'
 import { useAuthStore } from '@/store/auth'
 import { useThemeStore } from '@/store/theme'

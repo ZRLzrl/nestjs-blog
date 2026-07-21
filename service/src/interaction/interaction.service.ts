@@ -1,15 +1,17 @@
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
 import {
   Injectable,
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { Like } from './entities/like.entity.js';
-import { Comment } from './entities/comment.entity.js';
+
 import { Article } from '../article/entities/article.entity.js';
 import { User } from '../auth/entities/user.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
+import { Comment } from './entities/comment.entity.js';
+import { Like } from './entities/like.entity.js';
+
 import type { JwtUser } from '../auth/strategies/jwt.strategy.js';
 
 @Injectable()
@@ -39,7 +41,9 @@ export class InteractionService {
     if (existing) {
       em.remove(existing);
       await em.flush();
-      const likeCount = await this.likeRepository.count({ article: articleId } as any);
+      const likeCount = await this.likeRepository.count({
+        article: articleId,
+      } as any);
       return { liked: false, likeCount };
     }
 
@@ -51,7 +55,9 @@ export class InteractionService {
     em.persist(like);
     await em.flush();
 
-    const likeCount = await this.likeRepository.count({ article: articleId } as any);
+    const likeCount = await this.likeRepository.count({
+      article: articleId,
+    } as any);
     return { liked: true, likeCount };
   }
 

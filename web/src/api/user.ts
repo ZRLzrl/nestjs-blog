@@ -1,4 +1,5 @@
 import apiClient from './client'
+
 import type { PaginatedResponse } from './article'
 
 export interface UserItem {
