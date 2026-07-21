@@ -13,6 +13,34 @@
 - axios
 - dayjs
 - GSAP (GreenSock Animation Platform)
+- tailwindcss v4
+- @gsap/react
+
+---
+
+## 页面路由
+
+| 路径 | 页面 | 权限 |
+|------|------|------|
+| `/` | 文章列表 | 公开 |
+| `/about` | **项目介绍**（新增） | **公开** |
+| `/articles/new` | 写文章 | 需登录 |
+| `/articles/:id/edit` | 编辑文章 | 需登录（作者/管理员） |
+| `/articles/:id` | 文章详情 | 公开 |
+| `/login` | 登录 | 公开 |
+| `/register` | 注册 | 公开 |
+| `/admin/users` | 用户管理 | 管理员 |
+
+---
+
+## 「项目介绍」页面（`/about`）
+
+使用 **TailwindCSS v4** + **GSAP + ScrollTrigger** 打造的炫酷动画着陆页面。
+
+- **安装**：`tailwindcss` + `@tailwindcss/vite`（CSS-first 配置，Vite 插件集成）
+- **动画**：GSAP 官方 `useGSAP()` hook + ScrollTrigger 实现滚动驱动的视差、渐入、交错、逐层揭示等效果
+- **暗色模式**：通过 Tailwind `dark:` 变体（适配 `[data-theme="dark"]`）一键适配
+- **内容**：项目概览 → 技术栈 → 核心功能 → 项目架构 → 结语
 
 ---
 

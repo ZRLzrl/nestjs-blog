@@ -1,3 +1,8 @@
+@import "tailwindcss";
+
+/* 适配项目现有的 data-theme 暗色模式策略 */
+@custom-variant dark (&:where([data-theme="dark"] *));
+
 /* 全局基础样式 */
 *,
 *::before,

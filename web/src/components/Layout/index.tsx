@@ -18,6 +18,7 @@ import {
 } from 'react-router-dom'
 
 import { useAuth } from '@/hooks/useAuth'
+import About from '@/pages/About'
 import AdminUsers from '@/pages/AdminUsers'
 import ArticleDetail from '@/pages/ArticleDetail'
 import ArticleEditor from '@/pages/ArticleEditor'
@@ -40,6 +41,7 @@ interface RouteConfig {
 /** 路由配置：路径顺序从精确到模糊 */
 const ROUTE_CONFIG: RouteConfig[] = [
   { path: '/', key: 'article-list', Component: ArticleList },
+  { path: '/about', key: 'about', Component: About },
   {
     path: '/articles/new',
     key: 'article-new',
@@ -90,19 +92,20 @@ export function Layout() {
     })
   }
 
-  // 根据当前路径高亮菜单项
-  const selectedKey = (() => {
-    if (!activeRoute) return ''
-    if (activeRoute.key === 'article-list') return 'home'
-    if (activeRoute.key === 'article-new' || activeRoute.key === 'article-edit')
-      return 'new'
-    if (activeRoute.key === 'admin-users') return 'admin'
-    return ''
-  })()
+  // 始终可见的导航项
+  const alwaysVisibleNavItems: {
+    key: string
+    label: string
+    path: string
+    icon?: React.ReactNode
+  }[] = [
+    { key: 'home', label: '文章列表', path: '/' },
+    // { key: 'about', label: '项目介绍', path: '/about' },
+  ]
 
-  const navItems = isAuthenticated
+  // 登录后才可见的导航项
+  const authNavItems = isAuthenticated
     ? [
-        { key: 'home', label: '文章列表', path: '/' },
         {
           key: 'new',
           icon: <EditOutlined />,
@@ -121,6 +124,19 @@ export function Layout() {
           : []),
       ]
     : []
+
+  const navItems = [...alwaysVisibleNavItems, ...authNavItems]
+
+  // 根据当前路径高亮菜单项
+  const selectedKey = (() => {
+    if (!activeRoute) return ''
+    if (activeRoute.key === 'about') return 'about'
+    if (activeRoute.key === 'article-list') return 'home'
+    if (activeRoute.key === 'article-new' || activeRoute.key === 'article-edit')
+      return 'new'
+    if (activeRoute.key === 'admin-users') return 'admin'
+    return ''
+  })()
 
   return (
     <AntLayout style={{ minHeight: '100vh' }}>
@@ -150,25 +166,27 @@ export function Layout() {
             📝 My Blog
           </Text>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {navItems.map((item) => (
-              <Link key={item.key} to={item.path} style={{ lineHeight: 0 }}>
-                <Button
-                  type="text"
-                  icon={item.icon}
-                  style={{
-                    fontWeight: selectedKey === item.key ? 600 : 'normal',
-                    color:
-                      selectedKey === item.key
+            {navItems.map((item) => {
+              const isActive = selectedKey === item.key
+              return (
+                <Link key={item.key} to={item.path} style={{ lineHeight: 0 }}>
+                  <Button
+                    type="text"
+                    icon={item.icon}
+                    style={{
+                      fontWeight: isActive ? 600 : 'normal',
+                      color: isActive
                         ? '#1677ff'
                         : isDark
                           ? '#e8e8e8'
                           : undefined,
-                  }}
-                >
-                  {item.label}
-                </Button>
-              </Link>
-            ))}
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                </Link>
+              )
+            })}
           </div>
         </div>
 

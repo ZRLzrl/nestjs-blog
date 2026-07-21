@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { resolve, dirname } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -14,7 +15,7 @@ export default defineConfig(({ mode }) => {
   // const isDev = mode === 'development'
 
   return {
-    plugins: [react()],
+    plugins: [tailwindcss(), react()],
     resolve: {
       alias: {
         '@': resolve(__dirname, './src'), // '@' 指向 src 目录

@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.2",
+    "@gsap/react": "^2.1.2",
+    "@tailwindcss/vite": "^4.3.3",
     "ahooks": "^3.9.7",
     "antd": "^6.5.1",
     "axios": "^1.18.1",
@@ -21,6 +23,7 @@
     "react-activity-keepalive-kit": "^0.1.2",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
+    "tailwindcss": "^4.3.3",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
