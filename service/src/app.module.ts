@@ -1,5 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
@@ -8,9 +9,9 @@ import { AppService } from './app.service.js';
 import { ArticleModule } from './article/article.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { CommonModule } from './common/common.module.js';
+import { rateLimitConfig } from './common/configs/rate-limit.js';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
-import { rateLimitConfig } from './common/configs/rate-limit.js';
 import { InteractionModule } from './interaction/interaction.module.js';
 import mikroOrmConfig from './mikro-orm.config.js';
 import { UserModule } from './user/user.module.js';
@@ -29,6 +30,12 @@ import { UserModule } from './user/user.module.js';
     ArticleModule,
     InteractionModule,
     UserModule,
+
+    ConfigModule.forRoot({
+      envFilePath: [`.env.${process.env.NODE_ENV || 'development'}`, '.env'],
+      isGlobal: true, // 全局可用，不用在每个模块重复导入
+      cache: true,
+    }),
   ],
   controllers: [AppController],
   providers: [
