@@ -857,3 +857,20 @@ PATCH /users/:id/unfreeze
 ## 目录说明
 后端目录：service/
 前端目录：web/
+
+-------------------------------------------------
+
+## Angular Commit Message 规范
+
+| 前缀 | 含义 |
+|------|------|
+| feat | 新功能（Feature） |
+| fix | 修复（Fix） |
+| docs | 文档变更（Documentation） |
+| refactor | 代码重构（Refactor） |
+| style | 样式变更（Style） |
+| test | 测试变更（Test） |
+| build | 构建变更（Build） |
+| ci | 持续集成变更（CI） |
+| perf | 性能优化（Performance） |
+| chore | 其他变更（Chore） |
