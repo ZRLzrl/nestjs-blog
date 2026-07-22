@@ -52,6 +52,8 @@ export default function ArticleList() {
       const res = await articleApi.getList(params, {
         signal: controller.signal,
       })
+      // 请求完成后再次确认自己仍是最新的请求（防止 KeepAlive 重建组件后旧请求污染状态）
+      if (controller !== abortRef.current) return
       lastParamsRef.current = paramsKey
       setArticles(res.items)
       setTotal(res.meta.total)
@@ -59,7 +61,10 @@ export default function ArticleList() {
     } catch {
       // 请求被取消是预期的，不处理
     } finally {
-      setLoading(false)
+      // 只有当前请求仍然是最新的，才修改 loading 状态
+      if (controller === abortRef.current) {
+        setLoading(false)
+      }
     }
   }, [page, limit, titleKeyword])
 

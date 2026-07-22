@@ -16,7 +16,7 @@ import {
   message,
 } from 'antd'
 import dayjs from 'dayjs'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 
 import { userApi, type UserItem } from '@/api/user'
 
@@ -27,6 +27,8 @@ export default function AdminUsers() {
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
+  // 缓存当前参数，组件被 KeepAlive 从缓存唤醒时跳过重复请求
+  const lastParamsRef = useRef('')
 
   const fetchUsers = useCallback(async () => {
     setLoading(true)
@@ -42,8 +44,11 @@ export default function AdminUsers() {
   }, [page])
 
   useEffect(() => {
+    const paramsKey = `page-${page}`
+    if (paramsKey === lastParamsRef.current) return
+    lastParamsRef.current = paramsKey
     fetchUsers()
-  }, [fetchUsers])
+  }, [page, fetchUsers])
 
   const formatDate = (dateStr: string) =>
     dayjs(dateStr).format('YYYY-MM-DD HH:mm')

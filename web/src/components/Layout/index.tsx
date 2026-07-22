@@ -1,7 +1,5 @@
 import {
-  EditOutlined,
   UserOutlined,
-  TeamOutlined,
   LoginOutlined,
   LogoutOutlined,
   SunOutlined,
@@ -9,67 +7,20 @@ import {
 } from '@ant-design/icons'
 import { Layout as AntLayout, Button, Space, Typography, Modal } from 'antd'
 import KeepAlive from 'react-activity-keepalive-kit'
-import {
-  useLocation,
-  useNavigate,
-  Link,
-  matchPath,
-  Navigate,
-} from 'react-router-dom'
+import { useLocation, useNavigate, Link, Navigate } from 'react-router-dom'
 
 import { useAuth } from '@/hooks/useAuth'
-import About from '@/pages/About'
-import AdminUsers from '@/pages/AdminUsers'
-import ArticleDetail from '@/pages/ArticleDetail'
-import ArticleEditor from '@/pages/ArticleEditor'
-import ArticleList from '@/pages/ArticleList'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
+import {
+  resolveRouteRedirect,
+  getNavItems,
+  getSelectedNavKey,
+  ROUTE_CONFIG,
+  getActiveRoute,
+} from '@/router'
 import { useThemeStore } from '@/store/theme'
 
 const { Header, Content, Footer } = AntLayout
 const { Text } = Typography
-
-interface RouteConfig {
-  path: string
-  key: string
-  Component: React.ComponentType
-  requiresAuth?: boolean
-  requiresAdmin?: boolean
-}
-
-/** 路由配置：路径顺序从精确到模糊 */
-const ROUTE_CONFIG: RouteConfig[] = [
-  { path: '/', key: 'article-list', Component: ArticleList },
-  { path: '/about', key: 'about', Component: About },
-  {
-    path: '/articles/new',
-    key: 'article-new',
-    Component: ArticleEditor,
-    requiresAuth: true,
-  },
-  {
-    path: '/articles/:id/edit',
-    key: 'article-edit',
-    Component: ArticleEditor,
-    requiresAuth: true,
-  },
-  { path: '/articles/:id', key: 'article-detail', Component: ArticleDetail },
-  { path: '/login', key: 'login', Component: Login },
-  { path: '/register', key: 'register', Component: Register },
-  {
-    path: '/admin/users',
-    key: 'admin-users',
-    Component: AdminUsers,
-    requiresAuth: true,
-    requiresAdmin: true,
-  },
-]
-
-/** 获取当前匹配的路由 */
-function getActiveRoute(pathname: string) {
-  return ROUTE_CONFIG.find((r) => matchPath(r.path, pathname)) ?? null
-}
 
 export function Layout() {
   const navigate = useNavigate()
@@ -92,51 +43,13 @@ export function Layout() {
     })
   }
 
-  // 始终可见的导航项
-  const alwaysVisibleNavItems: {
-    key: string
-    label: string
-    path: string
-    icon?: React.ReactNode
-  }[] = [
-    { key: 'home', label: '文章列表', path: '/' },
-    // { key: 'about', label: '项目介绍', path: '/about' },
-  ]
-
-  // 登录后才可见的导航项
-  const authNavItems = isAuthenticated
-    ? [
-        {
-          key: 'new',
-          icon: <EditOutlined />,
-          label: '写文章',
-          path: '/articles/new',
-        },
-        ...(isAdmin
-          ? [
-              {
-                key: 'admin',
-                icon: <TeamOutlined />,
-                label: '用户管理',
-                path: '/admin/users',
-              },
-            ]
-          : []),
-      ]
-    : []
-
-  const navItems = [...alwaysVisibleNavItems, ...authNavItems]
-
-  // 根据当前路径高亮菜单项
-  const selectedKey = (() => {
-    if (!activeRoute) return ''
-    if (activeRoute.key === 'about') return 'about'
-    if (activeRoute.key === 'article-list') return 'home'
-    if (activeRoute.key === 'article-new' || activeRoute.key === 'article-edit')
-      return 'new'
-    if (activeRoute.key === 'admin-users') return 'admin'
-    return ''
-  })()
+  const navItems = getNavItems(isAuthenticated, isAdmin)
+  const selectedKey = getSelectedNavKey(activeRoute?.key)
+  const redirectTo = resolveRouteRedirect({
+    route: activeRoute,
+    isAuthenticated,
+    isAdmin,
+  })
 
   return (
     <AntLayout style={{ minHeight: '100vh' }}>
@@ -167,12 +80,13 @@ export function Layout() {
           </Text>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {navItems.map((item) => {
+              const Icon = item.icon
               const isActive = selectedKey === item.key
               return (
                 <Link key={item.key} to={item.path} style={{ lineHeight: 0 }}>
                   <Button
                     type="text"
-                    icon={item.icon}
+                    icon={Icon ? <Icon /> : undefined}
                     style={{
                       fontWeight: isActive ? 600 : 'normal',
                       color: isActive
@@ -238,19 +152,29 @@ export function Layout() {
           margin: '0 auto',
         }}
       >
-        {activeRoute?.requiresAuth && !isAuthenticated ? (
-          <Navigate to="/login" replace />
-        ) : activeRoute?.requiresAdmin && !isAdmin ? (
-          <Navigate to="/" replace />
+        {redirectTo ? (
+          <Navigate to={redirectTo} replace />
         ) : (
-          <KeepAlive activeName={activeRoute?.key ?? ''} max={5}>
-            {activeRoute
+          <>
+            {/* KeepAlive 始终渲染，确保缓存不丢失 */}
+            <KeepAlive
+              activeName={activeRoute?.keepAlive ? activeRoute.key : undefined}
+              max={5}
+            >
+              {ROUTE_CONFIG.filter((r) => r.keepAlive).map((r) => {
+                const Component = r.Component
+                return <Component key={r.key} />
+              })}
+            </KeepAlive>
+
+            {/* 非缓存页面在外部直接渲染 */}
+            {activeRoute && !activeRoute.keepAlive
               ? (() => {
                   const Component = activeRoute.Component
                   return <Component />
                 })()
               : null}
-          </KeepAlive>
+          </>
         )}
       </Content>
 
